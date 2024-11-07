@@ -1,7 +1,7 @@
 /***********************************************************
 * @description: Functions for automating the Roblox window
 * @author SP
-***********************************************************\
+***********************************************************/
 
 ; Updates global variables windowX, windowY, windowWidth, windowHeight
 ; Optionally takes a known window handle to skip GetRobloxHWND call
@@ -85,7 +85,7 @@ GetRobloxHWND()
 	}
 	else
 		return 0
-}*\
+}*/
 
 ; Activate the ROBLOX window
 ActivateRoblox() {
@@ -149,26 +149,26 @@ DisconnectCheck(testCheck := 0) {
 	; Main reconnect loop
 	Loop {
 		;Decide server
-		server := ((A_Index <= 20) && linkCodes.Has(n := (A_Index-1)//5 + 1)) ? n : ((Fallback = 0) && (n := ObjMinIndex(linkcodes))) ? n : 0
+		server := ((A_Index <= 20) && linkCodes.Has(n := (A_Index-1)//5 + 1)) ? n : ((n := ObjMinIndex(linkcodes))) ? n : 0
 
-		;Wait for success
+		; Wait for success
 		i := A_Index, success := 0
 		Loop 5 {
 			switch (ReconnectMethod = "Browser") ? 0 : Mod(i, 5) {
 				case 1,2:
 				CloseRoblox()
 				;Run Deeplink
-				try Run '"roblox://placeID=14279693118 (server ? ("&linkCode=" linkCodes[server]) : "") '"'
+				try Run '"roblox://placeID=14279693118 (server ? ("&linkCode=" linkCodes[server]) : "")"'
 
 				case 3,4:
 				;Run Deeplink (without closing ROBLOX)
-				try Run '"roblox://placeID=14279693118 (server ? ("&linkCode=" linkCodes[server]) : "") '"'
+				try Run '"roblox://placeID=14279693118 (server ? ("&linkCode=" linkCodes[server]) : "")"'
 
 				default:
 				if server {
 					CloseRoblox()
 					;Run link via browser
-					if ((success := LegacyReconnect(linkCodes[server], i)) = 1) {
+					if ((success := BrowserReconnect(linkCodes[server], i)) = 1) {
 						if (ReconnectMethod != "Browser") {
 							ReconnectMethod := "Browser"
 						}
@@ -194,13 +194,10 @@ DisconnectCheck(testCheck := 0) {
 				wait(1) ; Timeout 4 minutes in the case of a ROBLOX update
 			}
 			;Detect joining screen or loading game
-			Loop 60 {
+			Loop 120 {
 				ActivateRoblox()
 				if !GetRobloxClientPos() {
 					continue 2
-				}
-				if (ImgSearch("SkibiData") = 1) {
-					break
 				}
 				if (ImgSearch("ChapterCheck") = 1) {
 					success := 1
@@ -209,13 +206,13 @@ DisconnectCheck(testCheck := 0) {
 				if (ImgSearch("Disconnected", 2) = 1) {
 					continue 2
 				}
-				if (A_Index = 180) {
+				if (A_Index = 120) {
 					break 2
 				}
-				wait(1) ; Timeout 1 minute, slow loading
+				wait(1) ; Timeout 2 minutes, slow loading
 			}
 			;Wait for game to load
-			Loop 180 {
+			Loop 60 {
 				ActivateRoblox()
 				if !GetRobloxClientPos() {
 					continue 2
@@ -227,10 +224,10 @@ DisconnectCheck(testCheck := 0) {
 				if (ImgSearch("Disconnected") = 1) {
 					continue 2
 				}
-				if (A_Index = 180) {
+				if (A_Index = 60) {
 					break 2
 				}
-				wait(1) ; Timeout 3 minutes, slow loading
+				wait(1) ; Timeout 1 minute, slow loading
 			}
 		}
 
@@ -240,12 +237,12 @@ DisconnectCheck(testCheck := 0) {
 		if (success = 1) && (testCheck = 0) {
 			return 1
 		} else if (success = 1) && (testCheck = 1) {
-				return 2
+			return 2
 		}
 	}
 }
 
-LegacyReconnect(linkCode, i)
+BrowserReconnect(linkCode, i)
 {
 	global bitmaps
 	static cmd := Buffer(512), init := (DllCall("shlwapi\AssocQueryString", "Int",0, "Int",1, "Str","http", "Str","open", "Ptr",cmd.Ptr, "IntP",512),
@@ -344,7 +341,7 @@ LegacyReconnect(linkCode, i)
 				nm_setStatus("Error", "Disconnected during Reconnect`nRetry: " i)
 				Sleep 1000
 				break 2
-			}*\
+			}*/
 			if (A_Index = 240) {
 				; nm_setStatus("Error", "BSS Load Timeout`nRetry: " i)
 				Sleep 1000

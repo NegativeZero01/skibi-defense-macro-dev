@@ -75,7 +75,7 @@ MainGUI := Gui((AlwaysOnTop ? "+AlwaysOnTop " : "") "+Border +OwnDialogs", "Skib
 WinSetTransparent 255-floor(GUITransparency*2.55), MainGUI
 MainGUI.Show("x" GUI_X " y" GUI_Y " w500 h300")
 MainGUI.OnEvent("Close", sd_Close)
-MainGUI.AddText("x7 y285 +BackgroundTrans", VersionID)
+MainGUI.AddText("x7 y285 +BackgroundTrans", VID)
 DiscordHBitmap := Gdip_CreateHBITMAPFromBitmap(bitmaps["DiscordIcon"])
 DiscordButton := MainGUI.AddPicture("x440 y270 w25 h25 +BackgroundTrans vDiscordButton Disabled")
 DiscordButton.Value := "HBITMAP:" DiscordHBitmap
@@ -111,7 +111,7 @@ MainGui.AddCheckbox("x15 y40 vAlwaysOnTop Disabled Checked" AlwaysOnTop, "Always
 MainGUI.AddText("x15 y57 w100 +BackgroundTrans", "GUI Transparency:")
 MainGUI.AddText("x104 y57 w20 +Center +BackgroundTrans vGUITransparency", GUITransparency)
 MainGUI.AddUpDown("xp+24 yp-1 h16 -16 Range0-14 vGUITransparencyUpDown Disabled", GUITransparency//5).OnEvent("Change", sd_GUITransparency)
-MainGUI.AddButton("x14 y100 w150 h20 vAdvancedGUICustomisation Disabled", "Advanced Customisation").OnEvent("Click", sd_AdvancedCustomisation)
+MainGUI.AddButton("x14 y100 w150 h20 vAGC Disabled", "Advanced Customisation").OnEvent("Click", sd_AdvancedCustomisation)
 MainGUI.AddButton("x15 y155 w150 h20 vHotkeyGUI Disabled", "Change Hotkeys").OnEvent("Click", sd_HotkeyGUI)
 MainGUI.AddButton("x16 yp+24 w150 h20 vAutoclickerGUI Disabled", "Autoclicker Settings")
 MainGUI.AddButton("x20 yp+24 w140 h20 vHotkeyRestore Disabled", "Restore Defaults").OnEvent("Click", sd_ResetHotkeys)
@@ -122,13 +122,6 @@ MainGUI.AddButton("x227 yp+27 w120 h20 vSettingsRestore Disabled", "Reset Settin
 MainGUI.AddButton("x400 y97 w30 h20 vReconnectTest Disabled", "Test").OnEvent("Click", sd_ReconnectTest)
 MainGUI.AddText("x230 y125 +BackgroundTrans", "Private Server Link:")
 MainGUI.AddEdit("x230 y150 w250 h20 vPrivServer Lowercase Disabled", PrivServer).OnEvent("Change", sd_ServerLink)
-MainGui.AddCheckbox("x230 y180 vFallback Disabled Checked" Fallback, "Fallback to Public Server").OnEvent("Click", sd_Fallback)
-MainGUI.AddButton("x390 y177 w20 h20 vFallbackHelp Disabled", "?").OnEvent("Click", sd_FallbackHelp)
-MainGUI.AddText("x230 y210 +BackgroundTrans", "Code:")
-MainGUI.AddEdit("x270 y207 w70 h20 vCode Number Limit6", Code).OnEvent("Change", sd_Code)
-if (AGCUnlocked = 1) {
-	; MainGUI["AdvancedGUICustomisation"].Enabled := 1
-}
 
 TabCtrl.UseTab("Credits")
 ; aaaaaaaaaaaaaaaa
@@ -156,11 +149,7 @@ SetLoadProgress(percent, GUICtrl, Title1, SavePlace, Title2 := Title1) {
 			sd_HotkeyGUIChange(1)
 		}
         GUICtrl.Flash
-		if Rudeness = 1 {
-			MsgBox("I hate you!!!", "KYS", 0x1030)
-			ExitApp
-		}
-    }
+	}
     if percent > 100 {
         throw ValueError("'Load Progress' exceeds max value of 100", -2)
     }
@@ -196,6 +185,7 @@ sd_MainTabsChange(value) {
 	MainGUI["CloseButton"].Enabled := value
 	MainGUI["AlwaysOnTop"].Enabled := value
 	MainGUI["GUITransparencyUpDown"].Enabled := value
+	; MainGUI["AGC"].Enabled := value
 	MainGUI["HotkeyGUI"].Enabled := value
 	MainGUI["HotkeyRestore"].Enabled := value
 	MainGUI["GUITheme"].Enabled := value
@@ -204,9 +194,6 @@ sd_MainTabsChange(value) {
 	MainGUI["SettingsRestore"].Enabled := value
 	MainGUI["ReconnectTest"].Enabled := value
 	MainGUI["PrivServer"].Enabled := value
-	MainGUI["Fallback"].Enabled := value
-	MainGUI["FallbackHelp"].Enabled := value
-	MainGUI["Code"].Enabled := value
 }
 
 sd_HotkeyGUIChange(value) {
@@ -341,13 +328,10 @@ sd_GUITheme(*) {
 }
 
 sd_ReconnectTest(*){
-	; MainGUI.Minimize
-	; MainGUI.Opt("+Disabled"), sd_MainTabsChange(0)
 	CloseRoblox()
-	if (DisconnectCheck(1) = 2)
+	if (DisconnectCheck(1) = 2) {
 		MsgBox("Successfully rejoined via Deeplink!", "Reconnect Test Complete", 0x1000)
-	; MainGUI.Restore
-	; MainGUI.Opt("-Disabled"), sd_MainTabsChange(1)
+	}
 }
 
 sd_ServerLink(GuiCtrl, *){
@@ -448,16 +432,4 @@ sd_AdvancedCustomisation(*) {
 	HotkeyGUI.AddHotkey("x70 yp+25 w200 h18 vPauseHotkeyEdit Disabled", PauseHotkey).OnEvent("Change", sd_SaveHotkey), SetLoadProgress(80, HotkeyGUI, "Hotkeys", "HotkeyGUI")
 	HotkeyGUI.AddHotkey("x70 yp+25 w200 h18 vStopHotkeyEdit Disabled", StopHotkey).OnEvent("Change", sd_SaveHotkey), SetLoadProgress(90, HotkeyGUI, "Hotkeys", "HotkeyGUI")
     HotkeyGUI.AddHotkey("x70 yp+25 w200 h18 vCloseHotkeyEdit Disabled", CloseHotkey).OnEvent("Change", sd_SaveHotkey), SetLoadProgress(100, HotkeyGUI, "Hotkeys", "HotkeyGUI")*/
-}
-
-sd_Code(*) {
-	global
-	AGC_InputtedUnlockCode := MainGUI["InputAGCUnlockCode"].Value
-	IniWrite(AGC_InputtedUnlockCode, A_SettingsWorkingDir "main-config.ini", "Settings", "AGCIUC")
-	if AGC_InputtedUnlockCode = AGC_UnlockCodeAnswer {
-		MainGUI["InputAGCUnlockCode"].Enabled := 0
-		MsgBox("You have enabled advanced GUI customisation!`nThis allows you to customise other GUI objects part of the Macro.", "ACA Enabled", 0x20)
-		IniWrite(1, A_SettingsWorkingDir "main-config.ini", "Settings", "AGCUnlocked")
-		sd_Reload()
-	}
 }
