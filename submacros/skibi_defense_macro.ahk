@@ -28,7 +28,7 @@ global CRRN := ReplaceChar(RRN)
 RunWith32()
 CreateFolder(A_MacroWorkingDir "settings")
 CreateFolder(A_MacroWorkingDir "img\bitmap-debugging")
-WriteConfig('[Settings]`nGUI_X=0`nGUI_Y=0`nAlwaysOnTop=`nGUITransparency=0`nGUITheme=None`nKeyDelay=25`nMainGUILoadPercent=0`nHotkeyGUILoadPercent=0`nStartHotkey=F1`nPauseHotkey=F2`nStopHotkey=F3`nCloseHotkey=F4`nPrivServer=`nFallback=1`nAGCIUC=69420`nAGCUnlocked=0`nVID=v0.2.0.0-beta.2', A_SettingsWorkingDir "main-config.ini")
+WriteConfig('[Settings]`nGUI_X=0`nGUI_Y=0`nAlwaysOnTop=`nGUITransparency=0`nGUITheme=None`nKeyDelay=25`nMainGUILoadPercent=0`nHotkeyGUILoadPercent=0`nStartHotkey=F1`nPauseHotkey=F2`nStopHotkey=F3`nCloseHotkey=F4`nPrivServer=`nVID=v0.2.0.0-beta.2', A_SettingsWorkingDir "main-config.ini")
 if !FileExist(A_Desktop "\Start SD-Macro.lnk") {
     FileCreateShortcut(A_MacroWorkingDir "Start.bat", A_Desktop "\Start SD-Macro.lnk")
 }

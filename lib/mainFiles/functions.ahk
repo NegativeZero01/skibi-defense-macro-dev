@@ -125,8 +125,6 @@ sd_ImportMainConfig()
 		, "StopHotkey", "F3"
 		, "CloseHotkey", "F4"
 		, "PrivServer", ""
-		, "AGCIUC", 69420
-		, "AGCUnlocked", 0
 		, "VID", "")
 
 	local k, v, i, j
