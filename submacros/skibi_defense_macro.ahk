@@ -86,8 +86,14 @@ if !(pToken := Gdip_Startup())
 #Include "%A_InitialWorkingDir%\img\bitmaps.ahk"
 
 
-
+LanguageText := []
+LanguageFileContent := FileRead(A_ScriptDir "english.txt")
+loop Parse LanguageFileContent, "`r`n", "`r`n" {
+    LanguageFileContent.Push(A_LoopField)
+}
 Hotkey(StartHotkey, sd_Start)
 sd_Start(*) {
     MsgBox("Hi", "Nothing here", 0x20)
+    MsgBox("but uhh...", "Secret")
+    MsgBox(LanguageFileContent[3])
 }

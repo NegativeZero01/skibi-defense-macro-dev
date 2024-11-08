@@ -123,9 +123,11 @@ CloseRoblox() {
 global ReconnectMethod := "Deeplink"
 
 DisconnectCheck(testCheck := 0) {
-	static ServerLabels := Map(0,"Public Server", 1,"Private Server", 2,"Fallback Server 1", 3,"Fallback Server 2", 4,"Fallback Server 3")
+	MsgBox("Static", "Debugging")
+	static ServerLabels := Map(0,"Public Server", 1,"Private Server")
 
 	; If testCheck has no value, return if client hasn't disconnected or crashed
+	MsgBox("Checking for mistake", "Debugging")
 	if testCheck != 1 {
 		ActivateRoblox()
 		GetRobloxClientPos()
@@ -137,6 +139,7 @@ DisconnectCheck(testCheck := 0) {
 	}
 
 	; End any residual movement and obtain the linkcode from the PS link
+	MsgBox("Obtaining linkcodes", "Debugging")
 	Click "Up"
 	linkCodes := Map()
 	for k,v in ["PrivServer"] {
@@ -147,21 +150,26 @@ DisconnectCheck(testCheck := 0) {
 	}
 
 	; Main reconnect loop
+	MsgBox("Loop start", "Debugging")
 	Loop {
 		;Decide server
+		MsgBox("Deciding Server", "Debugging")
 		server := ((A_Index <= 20) && linkCodes.Has(n := (A_Index-1)//5 + 1)) ? n : ((n := ObjMinIndex(linkcodes))) ? n : 0
 
 		; Wait for success
 		i := A_Index, success := 0
+		MsgBox("Reconnect loop case", "Debugging")
 		Loop 5 {
 			switch (ReconnectMethod = "Browser") ? 0 : Mod(i, 5) {
 				case 1,2:
 				CloseRoblox()
 				;Run Deeplink
+				MsgBox("trying")
 				try Run '"roblox://placeID=14279693118 (server ? ("&linkCode=" linkCodes[server]) : "")"'
 
 				case 3,4:
 				;Run Deeplink (without closing ROBLOX)
+				MsgBox("trying")
 				try Run '"roblox://placeID=14279693118 (server ? ("&linkCode=" linkCodes[server]) : "")"'
 
 				default:
