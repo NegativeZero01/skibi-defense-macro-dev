@@ -11,7 +11,7 @@ sd_Reload(*) {
 
 Hotkey(CloseHotkey, sd_Close)
 sd_Close(*) {
-    confirmation := MsgBox("Close Macro?", "Closing Macro", "0x4")
+    confirmation := MsgBox(LanguageText[1], LanguageText[2], "0x4")
     if confirmation = "Yes" {
         SaveValues()
         wait(2.5)
@@ -55,7 +55,7 @@ RunWith32() {
 		SplitPath A_AhkPath, , &ahkDirectory
 
 		if !FileExist(ahkPath := ahkDirectory "\AutoHotkey32.exe")
-			MsgBox "Couldn't find the 32-bit version of Autohotkey in:`n" ahkPath, "Error", 0x10
+			MsgBox LanguageText[3] ":`n" ahkPath, LanguageText[4], 0x10
 		else
 			AHKReloadScript(ahkpath)
 
@@ -78,7 +78,7 @@ CheckDisplaySpecs() {
 		ExitApp
 	}*/
 	if A_ScreenDPI != 96 {
-	    MsgBox("Your display scale is not 100%!`nThis means the Macro will not be able to detect images in-game correctly, resulting in failure!`nTo fix this, follow these steps:`n - Open Settings (Win+I)`n - Navigate to System >> Display`n - Then set the scale to 100% (even if it isn't recommended for your device)`n - Restart the Macro and ROBLOX`n - Sign out if prompted to", "Warning", 0x1030)
+	    MsgBox(LanguageText[5], LanguageText[6], 0x1030)
     }
 }
 
@@ -89,6 +89,15 @@ ObjMinIndex(obj)
 	return 0
 }
 
+LoadLanguages() {
+	global
+	LanguageText := []
+	LanguageFileContent := FileRead(A_MacroWorkingDir "lib\Languages\" Language ".txt")
+    Loop Parse LanguageFileContent, "`r`n", "`r`n" {
+        (A_LoopField !="" ? LanguageText.Push(A_LoopField) :"")
+    }
+}
+
 
 
 CreateFolder(folder) {
@@ -96,7 +105,7 @@ CreateFolder(folder) {
         try {
 			DirCreate(folder) 
         } catch {
-		    MsgBox("Could not create the " folder " directory!`nThis means the Macro will not be able to use the functions of the files usually in this folder!`nTry moving the Macro to a different folder (e.g. Downloads or Documents).", "Failed to Create Folder", 0x40010)
+		    MsgBox(LanguageText[7] ".", LanguageText[8], 0x40010)
         }
 	}
 }
@@ -125,7 +134,8 @@ sd_ImportMainConfig()
 		, "StopHotkey", "F3"
 		, "CloseHotkey", "F4"
 		, "PrivServer", ""
-		, "VID", "")
+		, "VID", ""
+		, "Language", "english")
 
 	local k, v, i, j
 	for k,v in config ; load the default values as globals, will be overwritten if a new value exists when reading

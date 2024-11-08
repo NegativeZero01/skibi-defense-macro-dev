@@ -2,10 +2,10 @@ OnExit(SaveValues)
 
 if Month != "September" or "October" or "November" {
 	TraySetIcon(A_MacroWorkingDir "img\sdm_logo.ico", Freeze := true)
-	global Name := "Defense"
+	global GUIName := LanguageText[9]
 } else {
 	TraySetIcon(A_MacroWorkingDir "img\sdm_halloweenlogo.ico", Freeze := true)
-	global Name := "Cursed"
+	global GUIName := LanguageText[10]
 }
 
 A_TrayMenu.Delete()
@@ -41,12 +41,6 @@ global PrivServer := IniRead(A_SettingsWorkingDir "main-config.ini", "Settings",
 global Fallback := IniRead(A_SettingsWorkingDir "main-config.ini", "Settings", "Fallback")
 global AGC_InputtedUnlockCode := IniRead(A_SettingsWorkingDir "main-config.ini", "Settings", "AGCIUC")
 global AGC_UnlockCodeAnswer := Random(100000, 999999)*/
-
-global AGC_Unlocked := IniRead(A_SettingsWorkingDir "main-config.ini", "Settings", "AGCU")
-if AGC_Unlocked := 1 {
-    MainGUI["AdvancedGUICustomisation"].Enabled := 1
-}
-
 SetKeyDelay KeyDelay
 
 DllCall(DllCall("GetProcAddress"
@@ -71,7 +65,7 @@ if (GuiX && GuiY) {
 
 
 
-MainGUI := Gui((AlwaysOnTop ? "+AlwaysOnTop " : "") "+Border +OwnDialogs", "Skibi " Name " Macro (Loading: 0%)")
+MainGUI := Gui((AlwaysOnTop ? "+AlwaysOnTop " : "") "+Border +OwnDialogs", GUIName " (Loading: 0%)")
 WinSetTransparent 255-floor(GUITransparency*2.55), MainGUI
 MainGUI.Show("x" GUI_X " y" GUI_Y " w500 h300")
 MainGUI.OnEvent("Close", sd_Close)
@@ -84,10 +78,10 @@ GitHubHBitmap := Gdip_CreateHBITMAPFromBitmap(bitmaps["GitHubIcon"])
 GitHubButton := MainGUI.AddPicture("x470 y270 w25 h25 +BackgroundTrans vGitHubButton Disabled")
 GitHubButton.Value := "HBITMAP:" GitHubHBitmap
 GitHubButton.OnEvent("Click", OpenGitHub)
-MainGUI.AddButton("x10 y265 w65 h20 -Wrap vStartButton Disabled", " Start (" StartHotkey ")").OnEvent("Click", sd_Start)
-MainGUI.AddButton("x80 y265 w65 h20 -Wrap vPauseButton Disabled", " Pause (" PauseHotkey ")").OnEvent("Click", sd_Pause)
-MainGUI.AddButton("x150 y265 w65 h20 -Wrap vStopButton Disabled", " Stop (" StopHotkey ")").OnEvent("Click", sd_Reload)
-MainGUI.AddButton("x220 y265 w65 h20 -Wrap vCloseButton Disabled", " Close (" CloseHotkey ")").OnEvent("Click", sd_Close)
+MainGUI.AddButton("x10 y265 w65 h20 -Wrap vStartButton Disabled", " " LanguageText[11] " (" StartHotkey ")").OnEvent("Click", sd_Start)
+MainGUI.AddButton("x80 y265 w65 h20 -Wrap vPauseButton Disabled", " " LanguageText[12] " (" PauseHotkey ")").OnEvent("Click", sd_Pause)
+MainGUI.AddButton("x150 y265 w65 h20 -Wrap vStopButton Disabled", " " LanguageText[13] " (" StopHotkey ")").OnEvent("Click", sd_Reload)
+MainGUI.AddButton("x220 y265 w65 h20 -Wrap vCloseButton Disabled", " " LanguageText[14] " (" CloseHotkey ")").OnEvent("Click", sd_Close)
 TabArr := ["Settings","Credits"] ;, (Code = 467854) && TabArr.Push("Advanced")
 (TabCtrl := MainGui.Add("Tab", "x0 y-1 w500 h250 -Wrap", TabArr)).OnEvent("Change", (*) => TabCtrl.Focus())
 
@@ -95,38 +89,40 @@ TabArr := ["Settings","Credits"] ;, (Code = 467854) && TabArr.Push("Advanced")
 
 TabCtrl.UseTab("Settings")
 MainGUI.SetFont("s8 cDefault Bold", "Tahoma")
-MainGUI.AddGroupBox("x10 y25 w200 h100 +BackgroundTrans", "GUI Settings")
-MainGUI.AddGroupBox("x10 y130 w200 h100 +BackgroundTrans", "Hotkey Settings")
-MainGUI.AddGroupBox("x220 y25 w270 h70 +BackgroundTrans", "General Settings")
-MainGUI.AddGroupBox("x220 y100 w270 h100 +BackgroundTrans", "Reconnect Settings")
+MainGUI.AddGroupBox("x10 y25 w200 h100 +BackgroundTrans", LanguageText[15])
+MainGUI.AddGroupBox("x10 y130 w200 h100 +BackgroundTrans", LanguageText[16])
+MainGUI.AddGroupBox("x220 y25 w270 h70 +BackgroundTrans", LanguageText[17])
+MainGUI.AddGroupBox("x220 y100 w270 h100 +BackgroundTrans", LanguageText[18])
 
 MainGUI.SetFont("Norm")
-MainGUI.AddText("x15 y80 w70 +BackgroundTrans", "GUI Theme:")
+MainGUI.AddText("x15 y80 w70 +BackgroundTrans", LanguageText[19] ":")
 ThemesList := []
 Loop Files A_ThemesWorkingDir "*.msstyles" {
 	ThemesList.Push(StrReplace(A_LoopFileName, ".msstyles"))
 }
 (ThemesEdit := MainGui.AddDropDownList("x80 y76 w72 h100 vGUITheme Disabled", ThemesList)).Text := GUITheme, ThemesEdit.OnEvent("Change", sd_GUITheme)
-MainGui.AddCheckbox("x15 y40 vAlwaysOnTop Disabled Checked" AlwaysOnTop, "Always On Top").OnEvent("Click", sd_AlwaysOnTop)
-MainGUI.AddText("x15 y57 w100 +BackgroundTrans", "GUI Transparency:")
+MainGui.AddCheckbox("x15 y40 vAlwaysOnTop Disabled Checked" AlwaysOnTop, LanguageText[20]).OnEvent("Click", sd_AlwaysOnTop)
+MainGUI.AddText("x15 y57 w100 +BackgroundTrans", LanguageText[21] ":")
 MainGUI.AddText("x104 y57 w20 +Center +BackgroundTrans vGUITransparency", GUITransparency)
 MainGUI.AddUpDown("xp+24 yp-1 h16 -16 Range0-14 vGUITransparencyUpDown Disabled", GUITransparency//5).OnEvent("Change", sd_GUITransparency)
-MainGUI.AddButton("x14 y100 w150 h20 vAGC Disabled", "Advanced Customisation").OnEvent("Click", sd_AdvancedCustomisation)
-MainGUI.AddButton("x15 y155 w150 h20 vHotkeyGUI Disabled", "Change Hotkeys").OnEvent("Click", sd_HotkeyGUI)
-MainGUI.AddButton("x16 yp+24 w150 h20 vAutoclickerGUI Disabled", "Autoclicker Settings")
-MainGUI.AddButton("x20 yp+24 w140 h20 vHotkeyRestore Disabled", "Restore Defaults").OnEvent("Click", sd_ResetHotkeys)
-MainGUI.AddText("x225 y41 w100 +BackgroundTrans", "Input Delay (ms):")
+MainGUI.AddButton("x14 y100 w150 h20 vAGC Disabled", LanguageText[22]).OnEvent("Click", sd_AdvancedCustomisation)
+MainGUI.AddButton("x15 y155 w150 h20 vHotkeyGUI Disabled", LanguageText[23]).OnEvent("Click", sd_HotkeyGUI)
+MainGUI.AddButton("x16 yp+24 w150 h20 vAutoclickerGUI Disabled", LanguageText[24])
+MainGUI.AddButton("x20 yp+24 w140 h20 vHotkeyRestore Disabled", LanguageText[25]).OnEvent("Click", sd_ResetHotkeys)
+MainGUI.AddText("x225 y41 w100 +BackgroundTrans", LanguageText[26] ":")
 MainGUI.AddText("x305 y39 w47 h18 0x201")
 MainGUI.AddUpDown("Range0-9999 vKeyDelay Disabled", KeyDelay).OnEvent("Change", sd_SaveKeyDelay)
-MainGUI.AddButton("x227 yp+27 w120 h20 vSettingsRestore Disabled", "Reset Settings").OnEvent("Click", sd_ResetSettings)
+MainGUI.AddButton("x227 yp+27 w120 h20 vSettingsRestore Disabled", LanguageText[27]).OnEvent("Click", sd_ResetSettings)
 MainGUI.AddButton("x400 y97 w30 h20 vReconnectTest Disabled", "Test").OnEvent("Click", sd_ReconnectTest)
-MainGUI.AddText("x230 y125 +BackgroundTrans", "Private Server Link:")
+MainGUI.AddText("x230 y125 +BackgroundTrans", LanguageText[28] ":")
 MainGUI.AddEdit("x230 y150 w250 h20 vPrivServer Lowercase Disabled", PrivServer).OnEvent("Change", sd_ServerLink)
+LangArr := ["EN-GB", "RU"]
+MainGUI.AddDropDownList("x300 y41 +BackgroundTrans vLanguageSelection", LangArr).OnEvent("Change", sd_LanguageManager)
 
 TabCtrl.UseTab("Credits")
 ; aaaaaaaaaaaaaaaa
 wait(1)
-SetLoadProgress(100, MainGUI, "Skibi Defense Macro", "MainGUI", "Skibi " Name " Macro [ALPHA]")
+SetLoadProgress(100, MainGUI, "Skibi Defense Macro", "MainGUI", "Skibi " GUIName " Macro [ALPHA]")
 
 
 
@@ -179,7 +175,7 @@ sd_SaveKeyDelay(*){
 sd_MainTabsChange(value) {
 	MainGUI["DiscordButton"].Enabled := value
 	MainGUI["GitHubButton"].Enabled := value
-	MainGUI["StartButton"].Enabled := value
+	; MainGUI["StartButton"].Enabled := value
 	; MainGUI["PauseButton"].Enabled := value
 	MainGUI["StopButton"].Enabled := value
 	MainGUI["CloseButton"].Enabled := value
@@ -236,7 +232,7 @@ sd_HotkeyGUI(*){
 sd_SaveHotkey(GuiCtrl, *){
 	global
 	local k, v, l, StartHotkeyEdit, PauseHotkeyEdit, StopHotkeyEdit, CloseHotkeyEdit
-	k := GuiCtrl.Name, %k% := GuiCtrl.Value
+	k := GuiCtrl.GUIName, %k% := GuiCtrl.Value
 
 	v := StrReplace(k, "Edit")
 	if !(%k% ~= "^[!^+]+$")
@@ -337,7 +333,7 @@ sd_ReconnectTest(*){
 sd_ServerLink(GuiCtrl, *){
 	global PrivServer
 	p := EditGetCurrentCol(GuiCtrl)
-	k := GuiCtrl.Name
+	k := GuiCtrl.GUIName
 	str := GuiCtrl.Value
 
 	RegExMatch(str, "i)((http(s)?):\/\/)?((www|web)\.)?roblox\.com\/games\/14279693118\/?([^\/]*)\?privateServerLinkCode=.{32}(\&[^\/]*)*", &NewPrivServer)
@@ -432,4 +428,14 @@ sd_AdvancedCustomisation(*) {
 	HotkeyGUI.AddHotkey("x70 yp+25 w200 h18 vPauseHotkeyEdit Disabled", PauseHotkey).OnEvent("Change", sd_SaveHotkey), SetLoadProgress(80, HotkeyGUI, "Hotkeys", "HotkeyGUI")
 	HotkeyGUI.AddHotkey("x70 yp+25 w200 h18 vStopHotkeyEdit Disabled", StopHotkey).OnEvent("Change", sd_SaveHotkey), SetLoadProgress(90, HotkeyGUI, "Hotkeys", "HotkeyGUI")
     HotkeyGUI.AddHotkey("x70 yp+25 w200 h18 vCloseHotkeyEdit Disabled", CloseHotkey).OnEvent("Change", sd_SaveHotkey), SetLoadProgress(100, HotkeyGUI, "Hotkeys", "HotkeyGUI")*/
+}
+
+sd_LanguageManager(*) {
+	global
+	if MainGUI["LanguageSelection"].Value = 1 {
+		Language := "english"
+	}
+	if MainGUI["LanguageSelection"].Value = 2 {
+		Language := "russian"
+	}
 }

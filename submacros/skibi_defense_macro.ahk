@@ -28,12 +28,13 @@ global CRRN := ReplaceChar(RRN)
 RunWith32()
 CreateFolder(A_MacroWorkingDir "settings")
 CreateFolder(A_MacroWorkingDir "img\bitmap-debugging")
-WriteConfig('[Settings]`nGUI_X=0`nGUI_Y=0`nAlwaysOnTop=`nGUITransparency=0`nGUITheme=None`nKeyDelay=25`nMainGUILoadPercent=0`nHotkeyGUILoadPercent=0`nStartHotkey=F1`nPauseHotkey=F2`nStopHotkey=F3`nCloseHotkey=F4`nPrivServer=`nVID=v0.2.0.0-beta.2', A_SettingsWorkingDir "main-config.ini")
+WriteConfig('[Settings]`nGUI_X=0`nGUI_Y=0`nAlwaysOnTop=`nGUITransparency=0`nGUITheme=None`nKeyDelay=25`nMainGUILoadPercent=0`nHotkeyGUILoadPercent=0`nStartHotkey=F1`nPauseHotkey=F2`nStopHotkey=F3`nCloseHotkey=F4`nPrivServer=`nVID=v0.2.0.0-beta.2`nLanguage=english', A_SettingsWorkingDir "main-config.ini")
 if !FileExist(A_Desktop "\Start SD-Macro.lnk") {
     FileCreateShortcut(A_MacroWorkingDir "Start.bat", A_Desktop "\Start SD-Macro.lnk")
 }
 sd_ImportMainConfig()
 CheckDisplaySpecs()
+LoadLanguages()
 QueryUpdateValidity()
 
 W := "sc011"
@@ -86,23 +87,8 @@ if !(pToken := Gdip_Startup())
 #Include "%A_InitialWorkingDir%\img\bitmaps.ahk"
 
 
-LanguageText := []
-LanguageFileContent := FileRead(A_ScriptDir "english.txt")
-loop Parse LanguageFileContent, "`r`n", "`r`n" {
-    LanguageText.Push(A_LoopField)
-}
+
 Hotkey(StartHotkey, sd_Start)
 sd_Start(*) {
-    MsgBox(LanguageText[2])
+    MsgBox("Placeholder", "Empty Function", 0x1000)
 }
-
-/*Close Macro?
-Closing Macro
-Yes
-No
-Couldn't find the 32-bit version of Autohotkey in:`n
-Error
-Your display scale is not 100%!`nThis means the Macro will not be able to detect images in-game correctly, resulting in failure!`nTo fix this, follow these steps:`n - Open Settings (Win+I)`n - Navigate to System >> Display`n - Then set the scale to 100% (even if it isn't recommended for your device)`n - Restart the Macro and ROBLOX`n - Sign out if prompted to
-Warning
-Could not create the " folder " directory!`nThis means the Macro will not be able to use the functions of the files usually in this folder!`nTry moving the Macro to a different folder (e.g. Downloads or Documents).
-Failed to Create folder*/
