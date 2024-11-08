@@ -89,11 +89,20 @@ if !(pToken := Gdip_Startup())
 LanguageText := []
 LanguageFileContent := FileRead(A_ScriptDir "english.txt")
 loop Parse LanguageFileContent, "`r`n", "`r`n" {
-    LanguageFileContent.Push(A_LoopField)
+    LanguageText.Push(A_LoopField)
 }
 Hotkey(StartHotkey, sd_Start)
 sd_Start(*) {
-    MsgBox("Hi", "Nothing here", 0x20)
-    MsgBox("but uhh...", "Secret")
-    MsgBox(LanguageFileContent[3])
+    MsgBox(LanguageText[2])
 }
+
+/*Close Macro?
+Closing Macro
+Yes
+No
+Couldn't find the 32-bit version of Autohotkey in:`n
+Error
+Your display scale is not 100%!`nThis means the Macro will not be able to detect images in-game correctly, resulting in failure!`nTo fix this, follow these steps:`n - Open Settings (Win+I)`n - Navigate to System >> Display`n - Then set the scale to 100% (even if it isn't recommended for your device)`n - Restart the Macro and ROBLOX`n - Sign out if prompted to
+Warning
+Could not create the " folder " directory!`nThis means the Macro will not be able to use the functions of the files usually in this folder!`nTry moving the Macro to a different folder (e.g. Downloads or Documents).
+Failed to Create folder*/
