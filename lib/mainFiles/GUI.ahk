@@ -116,7 +116,7 @@ MainGUI.AddButton("x227 yp+27 w120 h20 vSettingsRestore Disabled", LanguageText[
 MainGUI.AddButton("x400 y97 w30 h20 vReconnectTest Disabled", "Test").OnEvent("Click", sd_ReconnectTest)
 MainGUI.AddText("x230 y125 +BackgroundTrans", LanguageText[28] ":")
 MainGUI.AddEdit("x230 y150 w250 h20 vPrivServer Lowercase Disabled", PrivServer).OnEvent("Change", sd_ServerLink)
-LangArr := ["English", "Русский"]
+LangArr := ["English", "Español", "Türkçe"]
 MainGUI.AddDropDownList("x360 y38 +BackgroundTrans vLanguageSelection", LangArr).OnEvent("Change", sd_LanguageManager)
 
 TabCtrl.UseTab("Credits")
@@ -194,7 +194,7 @@ sd_MainTabsChange(value) {
 
 sd_HotkeyGUIChange(value) {
 	OnError (e, mode) => (mode = "Return") ? -1 : 0
-	HotkeyGUI["StartHotkeyEdit"].Enabled := value
+	; HotkeyGUI["StartHotkeyEdit"].Enabled := value
 	; HotkeyGUI["PauseHotkeyEdit"].Enabled := value
 	HotkeyGUI["StopHotkeyEdit"].Enabled := value
 	HotkeyGUI["CloseHotkeyEdit"].Enabled := value
@@ -436,8 +436,11 @@ sd_LanguageManager(*) {
 		Language := "english"
 	}
 	if MainGUI["LanguageSelection"].Value = 2 {
-		Language := "russian"
+		Language := "spanish"
+	}
+	if MainGUI["LanguageSelection"].Value = 3 {
+		Language := "turkish"
 	}
 	IniWrite(Language, A_SettingsWorkingDir "main-config.ini", "Settings", "Language")
-	sd_Reload
+	sd_Reload()
 }

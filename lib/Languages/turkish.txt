@@ -1,0 +1,28 @@
+Macroyu Kapat?
+Macro Kapatiliyor
+Autohotkeyin 32-bit versionu bulunamadi.
+Hata
+Ekran olceginiz %100 degil!`nBu, Makronun oyun icindeki goruntuleri dogru bir sekilde algilamayacagi ve bunun basarisizlikla sonuclanacagi anlamina gelir!`nBunu duzeltmek icin su adimlari izleyin:`n - Ayarlari Ac (Win+I)`n - Sistem >> Ekran'a gidin`n - Ardindan olcegi %100'e ayarlayin (cihazınız icin onerilmese bile)`n - Makroyu ve ROBLOX'u yeniden baslatin`n - İstenirse oturumu kapatin
+Uyari
+" Klasor " dizini olusturulamadi!`nBu, Makronun genellikle bu klasorde bulunan dosyalarin islevlerini kullanamayacagi anlamina gelir!`nMakroyu farkli bir klasore tasimayi deneyin (örn. İndirilenler veya Belgeler)
+Klasör olusturulamadi
+Skibi Defense Macro [ALPHA]
+Skibi Cursed Macro [ALPHA]
+Baslat
+Duraklat
+Durdur
+Kapat
+Kullanici Arayuzu Ayarlari
+Kisayol Tusu Ayarlari
+Genel Ayarlar
+Yeniden Baglanma Ayarlari
+Kullanici Arayuzu Temasi
+Daima Zirvede
+Kullanici Arayuzu Seffafligi
+Gelismis Ozellestirme
+Kısayol Tuslarını degistir
+Otomatik Tiklayici ayarlari
+Varsayilanlari Geri Yukle
+Giris Gecikmesi (ms)
+Ayarlari Sifirla
+Ozel Sunucu Baglantisi
