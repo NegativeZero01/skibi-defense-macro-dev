@@ -116,13 +116,13 @@ MainGUI.AddButton("x227 yp+27 w120 h20 vSettingsRestore Disabled", LanguageText[
 MainGUI.AddButton("x400 y97 w30 h20 vReconnectTest Disabled", "Test").OnEvent("Click", sd_ReconnectTest)
 MainGUI.AddText("x230 y125 +BackgroundTrans", LanguageText[28] ":")
 MainGUI.AddEdit("x230 y150 w250 h20 vPrivServer Lowercase Disabled", PrivServer).OnEvent("Change", sd_ServerLink)
-LangArr := ["EN-GB", "RU"]
-MainGUI.AddDropDownList("x300 y41 +BackgroundTrans vLanguageSelection", LangArr).OnEvent("Change", sd_LanguageManager)
+LangArr := ["English", "Русский"]
+MainGUI.AddDropDownList("x360 y38 +BackgroundTrans vLanguageSelection", LangArr).OnEvent("Change", sd_LanguageManager)
 
 TabCtrl.UseTab("Credits")
 ; aaaaaaaaaaaaaaaa
 wait(1)
-SetLoadProgress(100, MainGUI, "Skibi Defense Macro", "MainGUI", "Skibi " GUIName " Macro [ALPHA]")
+SetLoadProgress(100, MainGUI, GUIName, "MainGUI", GUIName)
 
 
 
@@ -438,4 +438,6 @@ sd_LanguageManager(*) {
 	if MainGUI["LanguageSelection"].Value = 2 {
 		Language := "russian"
 	}
+	IniWrite(Language, A_SettingsWorkingDir "main-config.ini", "Settings", "Language")
+	sd_Reload
 }
