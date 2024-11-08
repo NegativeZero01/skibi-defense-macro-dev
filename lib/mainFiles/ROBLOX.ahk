@@ -182,7 +182,8 @@ DisconnectCheck(testCheck := 0) {
 					try Run '"roblox://placeID=14279693118"'
 				}
 			}
-			;Detect ROBLOX window
+			; Detect ROBLOX window
+			MsgBox("Searching for ROBLOX Window", "Debugging")
 			Loop 240 {
 				if GetRobloxHWND() {
 					ActivateRoblox()
@@ -193,25 +194,8 @@ DisconnectCheck(testCheck := 0) {
 				}
 				wait(1) ; Timeout 4 minutes in the case of a ROBLOX update
 			}
-			;Detect joining screen or loading game
-			Loop 120 {
-				ActivateRoblox()
-				if !GetRobloxClientPos() {
-					continue 2
-				}
-				if (ImgSearch("ChapterCheck") = 1) {
-					success := 1
-					break 2
-				}
-				if (ImgSearch("Disconnected", 2) = 1) {
-					continue 2
-				}
-				if (A_Index = 120) {
-					break 2
-				}
-				wait(1) ; Timeout 2 minutes, slow loading
-			}
-			;Wait for game to load
+			; Detect joining screen or loading game and wait for game
+			MsgBox("Searching for Game", "Debugging")
 			Loop 60 {
 				ActivateRoblox()
 				if !GetRobloxClientPos() {
@@ -231,7 +215,7 @@ DisconnectCheck(testCheck := 0) {
 			}
 		}
 
-		;Successful reconnect
+		; Successful reconnect
 		ActivateRoblox()
 		GetRobloxClientPos()
 		if (success = 1) && (testCheck = 0) {

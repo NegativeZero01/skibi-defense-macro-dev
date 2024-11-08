@@ -6,15 +6,7 @@ Persistent(true)
 SetWorkingDir A_InitialWorkingDir
 CoordMode("Pixel", "Client")
 SendMode("Event")
-; OnError (e, mode) => (mode = "Return") ? -1 : 0
-
-language := "english"
-fileloc := A_ScriptDir "\" language ".txt"
-Text := FileRead(fileloc)
-loop A_Index {
-   fileloc[language]
-}
-MsgBox(language[3])
+OnError (e, mode) => (mode = "Return") ? -1 : 0
 
 ;@Ahk2Exe-SetCopyright Copyright © NegativeZero01 on Github (https://github.com/NegativeZero01)
 ;@Ahk2Exe-SetDescription Skibi Defense Macro [ALPHA]
